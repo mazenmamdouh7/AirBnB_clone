@@ -30,3 +30,6 @@ class TestBaseModel(unittest.TestCase):
         sleep(0.1)
         base_model_instance.save()
         self.assertNotEqual(base_model_instance.updated_at, old_updated_at)
+
+    if __name__ == "__main__":
+        unittest.main()
