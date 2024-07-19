@@ -33,6 +33,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertNotEqual(base_model_instance.updated_at, old_updated_at)
 
     def test_to_dict(self):
+        """Test for dict containing correct keys"""
         base_model_instance = BaseModel()
         model_dict = base_model_instance.to_dict()
         self.assertEqual(model_dict['__class__'], 'BaseModel')
@@ -41,6 +42,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(model_dict['updated_at'], base_model_instance.updated_at.isoformat())
     
     def test_str(self):
+        """Test for str return correct values"""
         base_model_instance = BaseModel()
         expected = f"[BaseModel] ({base_model_instance.id}) {base_model_instance.__dict__}"
         self.assertEqual(str(base_model_instance), expected)
