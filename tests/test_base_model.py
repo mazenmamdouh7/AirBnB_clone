@@ -4,6 +4,7 @@
 import unittest
 from models.base_model import BaseModel
 from time import sleep
+from datetime import datetime
 
 class TestBaseModel(unittest.TestCase):
     """Class for testing methods."""
