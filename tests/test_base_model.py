@@ -8,6 +8,12 @@ from datetime import datetime
 
 class TestBaseModel(unittest.TestCase):
     """Class for testing methods."""
+    def setUp(self):
+        """ setup for the proceeding tests """
+        self.model = BaseModel()
+        self.model.name = "My First Model"
+        self.model.my_number = 89
+
     def test_id(self):
         """Method for testing id"""
         base_model_instance = BaseModel()
