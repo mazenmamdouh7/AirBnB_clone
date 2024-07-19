@@ -31,5 +31,18 @@ class TestBaseModel(unittest.TestCase):
         base_model_instance.save()
         self.assertNotEqual(base_model_instance.updated_at, old_updated_at)
 
+    def test_to_dict(self):
+        base_model_instance = BaseModel()
+        model_dict = base_model_instance.to_dict()
+        self.assertEqual(model_dict['__class__'], 'BaseModel')
+        self.assertEqual(model_dict['id'], base_model_instance.id)
+        self.assertEqual(model_dict['created_at'], base_model_instance.created_at.isoformat())
+        self.assertEqual(model_dict['updated_at'], base_model_instance.updated_at.isoformat())
+    
+    def test_str(self):
+        base_model_instance = BaseModel()
+        expected = f"[BaseModel] ({base_model_instance.id}) {base_model_instance.__dict__}"
+        self.assertEqual(str(base_model_instance), expected)
+
     if __name__ == "__main__":
         unittest.main()
