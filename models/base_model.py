@@ -29,8 +29,8 @@ class BaseModel:
         dict_representation['updated_at'] = self.updated_at.isoformat()
         return dict_representation
 
-    if __name__ == "__main__":
-        base_model_instance = BaseModel()
-        print(base_model_instance)
-        base_model_instance.save()
-        print(base_model_instance.to_dict())
+if __name__ == "__main__":
+    base_model_instance = BaseModel()
+    print(base_model_instance)
+    base_model_instance.save()
+    print(base_model_instance.to_dict())
