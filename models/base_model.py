@@ -4,6 +4,7 @@ This file define BaseModel that defines all
 common attributes/methods for other classes
 """
 
+
 from uuid import uuid4
 from datetime import datetime
 
@@ -16,18 +17,26 @@ class BaseModel:
         self.updated_at = self.created_at
 
     def __str__(self):
+        """print: [<class name>] (<self.id>) <self.__dict__>"""
         className = self.__class__.__name__
         return f"[{className}] ({self.id}) {self.__dict__}"
 
     def save(self):
+        """updates the public instance attribute
+        updated_at with the current datetime
+        """
         self.updated_at = datetime.utcnow()
 
     def to_dict(self, **kwargs):
+        """returns a dictionary containing all
+        keys/values of __dict__ of the instance
+        """
         dict_representation = self.__dict__.copy()
         dict_representation['__class__'] = self.__class__.__name__
         dict_representation['created_at'] = self.created_at.isoformat()
         dict_representation['updated_at'] = self.updated_at.isoformat()
         return dict_representation
+
 
 if __name__ == "__main__":
     base_model_instance = BaseModel()
