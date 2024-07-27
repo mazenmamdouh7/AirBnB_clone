@@ -12,14 +12,9 @@ class TestBaseModel(unittest.TestCase):
     def test_init(self):
         """Ensure all instace is not none"""
         base_model_instance = BaseModel()
-        self.assertIsNotNone(base_model_instance, id)
-        self.assertIsNotNone(base_model_instance, created_at)
-        self.assertIsNotNone(base_model_instance, updated_at)
-    def setUp(self):
-        """ setup for the proceeding tests """
-        self.model = BaseModel()
-        self.model.name = "My First Model"
-        self.model.my_number = 89
+        self.assertIsNotNone(base_model_instance.id)
+        self.assertIsNotNone(base_model_instance.created_at)
+        self.assertIsNotNone(base_model_instance.updated_at)
 
     def test_id(self):
         """Method for testing id"""
