@@ -33,7 +33,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(type(base_model_instance.updated_at), datetime)
 
     def test_save(self):
-        """Test for save updated at"""
+        """Test for save updated at."""
         base_model_instance = BaseModel()
         old_updated_at = base_model_instance.updated_at
         sleep(0.1)
@@ -49,7 +49,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(model_dict['id'], base_model_instance.id)
         self.assertEqual(model_dict['created_at'], base_model_instance.created_at.isoformat())
         self.assertEqual(model_dict['updated_at'], base_model_instance.updated_at.isoformat())
-    
+
     def test_str(self):
         """Test for str return correct values"""
         base_model_instance = BaseModel()
