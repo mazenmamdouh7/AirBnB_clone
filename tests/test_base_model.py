@@ -6,8 +6,15 @@ from models.base_model import BaseModel
 from time import sleep
 from datetime import datetime
 
+
 class TestBaseModel(unittest.TestCase):
     """Class for testing methods."""
+    def test_init(self):
+        """Ensure all instace is not none"""
+        base_model_instance = BaseModel()
+        self.assertIsNotNone(base_model_instance, id)
+        self.assertIsNotNone(base_model_instance, created_at)
+        self.assertIsNotNone(base_model_instance, updated_at)
     def setUp(self):
         """ setup for the proceeding tests """
         self.model = BaseModel()
@@ -42,6 +49,7 @@ class TestBaseModel(unittest.TestCase):
         """Test for dict containing correct keys"""
         base_model_instance = BaseModel()
         model_dict = base_model_instance.to_dict()
+        self.assertIsInstance(model_dict, dict)
         self.assertEqual(model_dict['__class__'], 'BaseModel')
         self.assertEqual(model_dict['id'], base_model_instance.id)
         self.assertEqual(model_dict['created_at'], base_model_instance.created_at.isoformat())
@@ -53,5 +61,5 @@ class TestBaseModel(unittest.TestCase):
         expected = f"[BaseModel] ({base_model_instance.id}) {base_model_instance.__dict__}"
         self.assertEqual(str(base_model_instance), expected)
 
-    if __name__ == "__main__":
-        unittest.main()
+if __name__ == "__main__":
+    unittest.main()
