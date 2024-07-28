@@ -12,9 +12,14 @@ from datetime import datetime
 class BaseModel:
     """Base class for all our classes."""
     def __init__(self, *args, **kwargs):
-        self.id = str(uuid4())
-        self.created_at = datetime.utcnow()
-        self.updated_at = self.created_at
+        if kwargs:
+            for key, value in kwargs.items():
+                if
+
+        else:
+            self.id = str(uuid4())
+            self.created_at = datetime.utcnow()
+            self.updated_at = self.created_at
 
     def __str__(self):
         """print: [<class name>] (<self.id>) <self.__dict__>"""
