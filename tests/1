@@ -1,14 +1,10 @@
 #!/usr/bin/python3
 """Unittest for class BaseModel."""
 
-import sys
-import os
 import unittest
 from models.base_model import BaseModel
 from time import sleep
 from datetime import datetime
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 
 class TestBaseModel(unittest.TestCase):
