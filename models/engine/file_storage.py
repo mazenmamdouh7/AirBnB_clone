@@ -1,38 +1,36 @@
 #!/usr/bin/python3
-"""class FileStorage that serializes instances to a
-JSON file and deserializes JSON file to instances.
-"""
+"""Defines the FileStorage class for serialization and deserialization of BaseModel instances."""
+
 import json
 from models.base_model import BaseModel
 
-
 class FileStorage:
-    """class to save these objects to a file."""
+    """Serializes instances to a JSON file and deserializes JSON file to instances."""
 
-    """Private class attributes"""
     __file_path = "file.json"
     __objects = {}
 
     def all(self):
-        """Returns the dictionary __objects"""
+        """Returns the dictionary __objects."""
         return FileStorage.__objects
 
-    def new(self, obj):                                                                                                                                             """sets in __objects the obj with key <obj class name>.id"""
+    def new(self, obj):
+        """Sets in __objects the obj with key <obj class name>.id."""
         key = f"{obj.__class__.__name__}.{obj.id}"
         FileStorage.__objects[key] = obj
 
     def save(self):
-        """serializes __objects to the JSON file"""
-        obj_dict = {key : obj.to_dict() for key, obj in self.__objects.items()}
-        with open(self.__file_path, "w") as jsonf:
+        """Serializes __objects to the JSON file."""
+        obj_dict = {key: obj.to_dict() for key, obj in FileStorage.__objects.items()}
+        with open(FileStorage.__file_path, "w") as jsonf:
             json.dump(obj_dict, jsonf)
 
     def reload(self):
-        """deserializes the JSON file to __objects"""
+        """Deserializes the JSON file to __objects if it exists."""
         try:
             with open(FileStorage.__file_path, "r") as jsonf:
                 obj_dict = json.load(jsonf)
-            for key, value in obj_dict.items():
-                FileStorage.__objects[key] = BaseModel(**value)
+                for key, value in obj_dict.items():
+                    FileStorage.__objects[key] = BaseModel(**value)
         except FileNotFoundError:
             pass
