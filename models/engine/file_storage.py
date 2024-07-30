@@ -15,11 +15,11 @@ class FileStorage:
 
     def all(self):
         """Returns the dictionary __objects"""
-        return slef.__objects
+        return FileStorage.__objects
 
     def new(self, obj):                                                                                                                                             """sets in __objects the obj with key <obj class name>.id"""
         key = f"{obj.__class__.__name__}.{obj.id}"
-        self.__objects[key] = obj
+        FileStorage.__objects[key] = obj
 
     def save(self):
         """serializes __objects to the JSON file"""
@@ -30,9 +30,9 @@ class FileStorage:
     def reload(self):
         """deserializes the JSON file to __objects"""
         try:
-            with open(self.__file_path, "r") as jsonf:
+            with open(FileStorage.__file_path, "r") as jsonf:
                 obj_dict = json.load(jsonf)
             for key, value in obj_dict.items():
-                self.__objects[key] = BaseModel(**value)
+                FileStorage.__objects[key] = BaseModel(**value)
         except FileNotFoundError:
             pass
