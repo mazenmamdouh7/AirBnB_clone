@@ -1,5 +1,11 @@
+#!/usr/bin/pyhton3
+"""
+class BaseModel that defines all
+common attributes/methods for other classes
+"""
 import uuid
 from datetime import datetime
+
 
 class BaseModel:
     def __init__(self, *args, **kwargs):
