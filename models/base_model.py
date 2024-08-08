@@ -5,7 +5,7 @@ common attributes/methods for other classes
 """
 import uuid
 from datetime import datetime
-
+from models import storage
 
 class BaseModel:
     def __init__(self, *args, **kwargs):
@@ -20,10 +20,13 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
+            storage.new(self)
 
     def save(self):
         """Update the updated_at attribute with the current datetime"""
         self.updated_at = datetime.now()
+        storage.new(self)
+        storage.save()
 
     def to_dict(self):
         """Return a dictionary representation of the instance"""
