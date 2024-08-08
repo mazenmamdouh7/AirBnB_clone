@@ -23,15 +23,16 @@ class FileStorage:
         """Sets in __objects the
         obj with key <obj class name>.id.
         """
-        key = f"{obj.__class__.__name__}.{obj.id}"
-        FileStorage.__objects[key] = obj
+        if obj:
+            key = f"{obj.__class__.__name__}.{obj.id}"
+            FileStorage.__objects[key] = obj
 
     def save(self):
         """Serializes __objects to the JSON file."""
         obj_dict = {
-                key: obj.to_dict()
-                for key, obj in FileStorage.__objects.items()
-                }
+            key: obj.to_dict()
+            for key, obj in FileStorage.__objects.items()
+        }
         with open(FileStorage.__file_path, "w") as jsonf:
             json.dump(obj_dict, jsonf)
 
@@ -41,6 +42,8 @@ class FileStorage:
             with open(FileStorage.__file_path, "r") as jsonf:
                 obj_dict = json.load(jsonf)
                 for key, value in obj_dict.items():
-                    FileStorage.__objects[key] = BaseModel(**value)
+                    cls_name = value['__class__']
+                    if cls_name == 'BaseModel':
+                        FileStorage.__objects[key] = BaseModel(**value)
         except FileNotFoundError:
             pass
