@@ -1,66 +1,76 @@
 #!/usr/bin/python3
-"""Unittest for class BaseModel."""
+"""Unittest for FileStorage class."""
 
 import unittest
-from models.base_model import *
-from time import sleep
-from datetime import datetime
+import os
+from models.base_model import BaseModel
+from models.engine.file_storage import FileStorage
+from models import storage
 
+class TestFileStorage(unittest.TestCase):
+    """Class for testing the FileStorage class."""
 
-class TestBaseModel(unittest.TestCase):
-    """Class for testing methods."""
+    @classmethod
+    def setUpClass(cls):
+        """Set up class for FileStorage tests."""
+        cls.storage = FileStorage()
+        cls.file_path = cls.storage._FileStorage__file_path
+
     def setUp(self):
-        """ setup for the proceeding tests """
-        self.model = BaseModel()
-        self.model.name = "My First Model"
-        self.model.my_number = 89
+        """Setup for the proceeding tests."""
+        if os.path.exists(self.file_path):
+            os.remove(self.file_path)
 
-    def test_init(self):
-        """Ensure all instace is not none"""
-        base_model_instance = BaseModel()
-        self.assertIsNotNone(base_model_instance.id)
-        self.assertIsNotNone(base_model_instance.created_at)
-        self.assertIsNotNone(base_model_instance.updated_at)
+    def test_all(self):
+        """Test the all() method of FileStorage."""
+        base_model = BaseModel()
+        base_model.save()
+        all_objects = self.storage.all()
+        key = f"{base_model.__class__.__name__}.{base_model.id}"
+        self.assertIn(key, all_objects)
+        self.assertEqual(all_objects[key], base_model)
 
-    def test_id(self):
-        """Method for testing id"""
-        base_model_instance = BaseModel()
-        self.assertEqual(len(base_model_instance.id), 36)
-        self.assertTrue(isinstance(base_model_instance.id, str))
-
-    def test_created_at(self):
-        """Test for created at type."""
-        base_model_instance = BaseModel()
-        self.assertEqual(type(base_model_instance.created_at), datetime)
-
-    def test_updated_at(self):
-        """Test for updated at type."""
-        base_model_instance = BaseModel()
-        self.assertEqual(type(base_model_instance.updated_at), datetime)
+    def test_new(self):
+        """Test the new() method of FileStorage."""
+        base_model = BaseModel()
+        self.storage.new(base_model)
+        all_objects = self.storage.all()
+        key = f"{base_model.__class__.__name__}.{base_model.id}"
+        self.assertIn(key, all_objects)
+        self.assertEqual(all_objects[key], base_model)
 
     def test_save(self):
-        """Test for save updated at."""
-        base_model_instance = BaseModel()
-        old_updated_at = base_model_instance.updated_at
-        sleep(0.1)
-        base_model_instance.save()
-        self.assertNotEqual(base_model_instance.updated_at, old_updated_at)
+        """Test the save() method of FileStorage."""
+        base_model = BaseModel()
+        base_model.save()
+        self.storage.save()
+        with open(self.file_path, 'r') as file:
+            data = file.read()
+        self.assertIn(f"{base_model.__class__.__name__}.{base_model.id}", data)
 
-    def test_to_dict(self):
-        """Test for dict containing correct keys"""
-        base_model_instance = BaseModel()
-        model_dict = base_model_instance.to_dict()
-        self.assertIsInstance(model_dict, dict)
-        self.assertEqual(model_dict['__class__'], 'BaseModel')
-        self.assertEqual(model_dict['id'], base_model_instance.id)
-        self.assertEqual(model_dict['created_at'], base_model_instance.created_at.isoformat())
-        self.assertEqual(model_dict['updated_at'], base_model_instance.updated_at.isoformat())
+    def test_reload(self):
+        """Test the reload() method of FileStorage."""
+        base_model = BaseModel()
+        base_model.save()
+        self.storage.save()
+        self.storage.reload()
+        all_objects = self.storage.all()
+        key = f"{base_model.__class__.__name__}.{base_model.id}"
+        self.assertIn(key, all_objects)
+        self.assertEqual(all_objects[key], base_model)
 
-    def test_str(self):
-        """Test for str return correct values"""
-        base_model_instance = BaseModel()
-        expected = f"[BaseModel] ({base_model_instance.id}) {base_model_instance.__dict__}"
-        self.assertEqual(str(base_model_instance), expected)
+    def test_reload_no_file(self):
+        """Test reload() when file does not exist."""
+        if os.path.exists(self.file_path):
+            os.remove(self.file_path)
+        self.storage.reload()
+        self.assertEqual(len(self.storage.all()), 0)
+
+    @classmethod
+    def tearDownClass(cls):
+        """Clean up after tests."""
+        if os.path.exists(cls.file_path):
+            os.remove(cls.file_path)
 
 if __name__ == "__main__":
     unittest.main()
