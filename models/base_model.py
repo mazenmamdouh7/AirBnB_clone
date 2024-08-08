@@ -8,6 +8,12 @@ from datetime import datetime
 from models import storage
 
 class BaseModel:
+    def save(self):
+        """Update the updated_at attribute with the current datetime"""
+        self.updated_at = datetime.now()
+        storage.new(self)
+        storage.save()
+
     def __init__(self, *args, **kwargs):
         """Initialize the instance"""
         if kwargs:
@@ -21,12 +27,6 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
             storage.new(self)
-
-    def save(self):
-        """Update the updated_at attribute with the current datetime"""
-        self.updated_at = datetime.now()
-        storage.new(self)
-        storage.save()
 
     def to_dict(self):
         """Return a dictionary representation of the instance"""
