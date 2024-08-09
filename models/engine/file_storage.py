@@ -1,16 +1,9 @@
-#!/usr/bin/python3
-"""Defines the FileStorage class for
-serialization and deserialization of BaseModel instances.
-"""
-
+#/usr/bin/pyhton3
 import json
 from models.base_model import BaseModel
 
-
 class FileStorage:
-    """Serializes instances to a JSON file and
-    deserializes JSON file to instances.
-    """
+    """Serializes instances to a JSON file and deserializes JSON file to instances."""
 
     __file_path = "file.json"
     __objects = {}
@@ -20,9 +13,7 @@ class FileStorage:
         return FileStorage.__objects
 
     def new(self, obj):
-        """Sets in __objects the
-        obj with key <obj class name>.id.
-        """
+        """Sets in __objects the obj with key <obj class name>.id."""
         if obj:
             key = f"{obj.__class__.__name__}.{obj.id}"
             FileStorage.__objects[key] = obj
