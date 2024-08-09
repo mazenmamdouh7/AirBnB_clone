@@ -4,7 +4,7 @@ import cmd
 class HBNBCommand(cmd.Cmd):
     """Command interpreter for the HBNB application."""
     
-    prompt = '(hbnb) '
+    prompt = '(hbnb)'
 
     def do_quit(self, line):
         """Quit command to exit the program."""
@@ -12,7 +12,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, line):
         """Exit command on EOF."""
-        print()  # Print a newline after EOF
+        print()
         return True
 
     def help_quit(self):
@@ -24,7 +24,8 @@ class HBNBCommand(cmd.Cmd):
         print("Exit command on End Of File (Ctrl+D).")
 
     def emptyline(self):
-        """Override emptyline method to not execute anything on an empty line."""
+        """Override emptyline method to
+        not execute anything on an empty line."""
         pass
 
     def do_help(self, line):
